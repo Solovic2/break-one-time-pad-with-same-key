@@ -29,6 +29,20 @@ def transform(my_array, index_row):
             get_the_context(index_row, i, my_array)
 
 
+# Print the cipher text
+def print_cipher(arr):
+    plain_text = ""
+    for i in range(len(arr)):
+        for j in range(len(arr[0])):
+            if len(arr[i][j]) > 1:
+                plain_text += "X"
+            else:
+                plain_text += arr[i][j]
+        if i != len(arr) - 1:
+            plain_text += "\n"
+    return plain_text
+
+
 if __name__ == '__main__':
     text = [
         "70A20FBD7E209324A979BFE2997A46E61B22749692EB1655FA995D46A9FA654F43C93F2114A21E3E227714580A6790B88BD74F9E09107D8B0EAC",
@@ -49,17 +63,7 @@ if __name__ == '__main__':
         transform(array, i)
     #  Print the result.
     #  Each unspecified letter will be X
-    unknown = array
-    plain_text = ""
-    for i in range(len(unknown)):
-        for j in range(len(unknown[0])):
-            if len(unknown[i][j]) > 1:
-                plain_text += "X"
-            else:
-                plain_text += unknown[i][j]
-        if i != len(unknown) - 1:
-            plain_text += "\n"
-    print("Unknown Characters" + "\n" + plain_text)
+    print("Unknown Characters" + "\n" + print_cipher(array))
     print("\n \n")
     # Start Guessing, Guessing some characters from first sentence and from second to get all ciphertext
     # Get all unknown characters index in the first sentence because all sentence has the same unknown index
@@ -78,18 +82,8 @@ if __name__ == '__main__':
             raw = array[k][places[i + t]]
             for j in range(len(array)):
                 if len(array[j][places[i + t]]) > 1:
-                    val = int(array[j][places[i+t]], base=16) ^ ord(guessing[k][i]) ^ int(raw, base=16)
-                    array[j][places[i+t]] = (chr(val ^ 32 ^ 32))
+                    val = int(array[j][places[i + t]], base=16) ^ ord(guessing[k][i]) ^ int(raw, base=16)
+                    array[j][places[i + t]] = (chr(val ^ 32 ^ 32))
         t += len(guessing[k])
-    unknown = array
-    plain_text = ""
-    for i in range(len(unknown)):
-        for j in range(len(unknown[0])):
-            if len(unknown[i][j]) > 1:
-                plain_text += "X"
-            else:
-                plain_text += unknown[i][j]
-        if i != len(unknown) - 1:
-            plain_text += "\n"
-    print("The True Cipher Text : " + "\n" + plain_text)
-
+    # Show results
+    print("The True Cipher Text : " + "\n" + print_cipher(array))
